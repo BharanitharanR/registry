@@ -1,6 +1,8 @@
 package com.batty.registry;
 
 import com.batty.registry.api.RegistryApi;
+import com.batty.registry.datastore.DatastoreImpl;
+import com.batty.registry.model.Error;
 import com.batty.registry.model.ServiceSchema;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +18,29 @@ public class RestService implements RegistryApi
   // https://mydeveloperplanet.com/2022/02/08/generate-server-code-using-openapi-generator/
 
   // https://github.com/mydeveloperplanet/myopenapiplanet/tree/master
+    @Autowired
+    protected DatastoreImpl datastore;
 
     @Override
     public ResponseEntity<ServiceSchema> addService(String serviceId, ServiceSchema serviceSchema) {
-        return null;
+      try {
+        return ResponseEntity.ok(datastore.addService(serviceSchema));
+      }
+      catch(Exception e)
+      {
+
+        return (ResponseEntity<ServiceSchema>) ResponseEntity.internalServerError();
+      }
     }
 
     @Override
     public ResponseEntity<ServiceSchema> getService(String serviceId) {
-        return null;
+      try {
+        return ResponseEntity.ok(datastore.findServiceById(serviceId));
+      }
+      catch(Exception e)
+      {
+        return (ResponseEntity<ServiceSchema>) ResponseEntity.internalServerError();
+      }
     }
 }

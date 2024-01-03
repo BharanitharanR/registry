@@ -2,6 +2,12 @@ package com.batty.registry.datastore;
 
 
 import com.batty.framework.interfaces.DatastoreInterface;
+import com.batty.registry.model.ServiceSchema;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.mongodb.client.model.IndexOptions;
 import jakarta.annotation.PostConstruct;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -10,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.batty.framework.datastore.DatabaseHandler;
 import com.batty.framework.datastore.DatastoreUtil;
-import java.util.concurrent.TimeUnit;
 
 @Component("RegistryDataStoreImpl")
 public class DatastoreImpl implements DatastoreInterface {
 
     protected Logger log = LoggerFactory.getLogger(DatastoreImpl.class);
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @Autowired
     protected DatabaseHandler datastore;
@@ -36,16 +44,44 @@ public class DatastoreImpl implements DatastoreInterface {
         try
         {
             Document index = new Document();
-            index.put("name",1);
+            index.put("serviceId",1);
             this.datastore.createIndex(index, this.utils.getOptions().unique(true));
             index.clear();
-            index.put("lastModifiedTimeStamp",1);
-            this.datastore.createIndex(index, this.utils.getOptions().expireAfter(15L, TimeUnit.SECONDS));
         }
-        catch(Exception e)
+        catch(Exception ignored)
         {
 
         }
     }
+
+    public ServiceSchema findServiceById(String serviceId) {
+        Document doc = new Document();
+        doc.put("serviceId",serviceId);
+        try
+        {
+          log.info("data from db"+this.datastore.findOne(doc,ServiceSchema.class).toString());
+          return this.datastore.findOne(doc,ServiceSchema.class);
+        }
+        catch(Exception e)
+        {
+                    log.info("error in findServiceById"+e);
+                    return null;
+                    // throw new RuntimeException(e);
+        }
+    }
+
+    public ServiceSchema addService(ServiceSchema serviceSchemaModel)  {
+        Document doc;
+        try {
+            doc  = Document.parse(this.objectMapper.writeValueAsString(serviceSchemaModel));
+            this.datastore.insertOne(doc);
+            return serviceSchemaModel;
+        } catch (Exception e) {
+            // throw new RuntimeException(e);
+            return null;
+        }
+
+    }
+
 
 }
