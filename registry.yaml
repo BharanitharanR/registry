@@ -1,0 +1,103 @@
+openapi: "3.0.2"
+info:
+  title: Non-oAuth Scopes example
+  description: sample
+  version: 1.0.0
+paths:
+  /registry/service/{serviceId}:
+    post:
+      summary: Post the service that needs to be registered
+      operationId: addService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: The serviceId for which the data needs to be registered
+          schema:
+            type: string
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/serviceSchema'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceSchema'
+        "400":
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Get the details of the services being registered
+      operationId: getService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: get thd details of the service
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serviceSchema'
+        "400":
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    serviceSchema:
+      type: "object"
+      properties:
+        serviceID:
+          type: string
+        ServiceName:
+          type: string
+        ServiceHostIP:
+          type: string
+        Status:
+          type: string
+
+    Error:
+      type: "object"
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    serviceCollection:
+      type: "object"
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        lastModifiedTimeStamp:
+          type: object
+          $ref: '#/components/schemas/MongoDate'
+
+    MongoDate:
+      type: "object"
+      properties:
+        $date:
+          type: string
+          format: time
