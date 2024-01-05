@@ -4,17 +4,25 @@ import com.batty.registry.api.RegistryApi;
 import com.batty.registry.datastore.DatastoreImpl;
 import com.batty.registry.model.Error;
 import com.batty.registry.model.ServiceSchema;
+import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import com.batty.registry.HelloRequest;
+import com.batty.registry.HelloResponse;
+import com.batty.registry.RestServiceGrpc.*;
+import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
+
 
 @Component("RegistryController")
 @RestController
-public class RestService implements RegistryApi
-{
+@GrpcService
+public class RestService extends RestServiceImplBase implements RegistryApi  {
   // https://mydeveloperplanet.com/2022/02/08/generate-server-code-using-openapi-generator/
 
   // https://github.com/mydeveloperplanet/myopenapiplanet/tree/master
@@ -43,4 +51,14 @@ public class RestService implements RegistryApi
         return (ResponseEntity<ServiceSchema>) ResponseEntity.internalServerError();
       }
     }
+
+  @Override
+  public void hello(HelloRequest request, StreamObserver<HelloResponse> responseObserver) {
+    HelloResponse reply = HelloResponse.newBuilder()
+            .setResp("Hello ==> " + request.getFirstName())
+            .build();
+    responseObserver.onNext(reply);
+    responseObserver.onCompleted();
+  }
+
 }
