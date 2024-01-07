@@ -2,26 +2,15 @@ package com.batty.registry;
 
 import com.batty.registry.api.RegistryApi;
 import com.batty.registry.datastore.DatastoreImpl;
-import com.batty.registry.model.Error;
-import com.batty.registry.model.MongoDate;
 import com.batty.registry.model.ServiceSchema;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Indexed;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.batty.registry.RestServiceGrpc.*;
-import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @Component("RegistryController")
@@ -36,12 +25,18 @@ public class RestService extends RestServiceImplBase implements RegistryApi  {
 
     @Override
     public ResponseEntity<ServiceSchema> addService(String serviceId, ServiceSchema serviceSchema) {
-      try {
-        return ResponseEntity.ok(datastore.addService(serviceSchema));
+      try
+      {
+          if( datastore.addService(serviceSchema) )
+          {
+              return ResponseEntity.ok(datastore.findServiceById(serviceSchema.getServiceId()));
+          }
+          else {
+              return ResponseEntity.noContent().build();
+          }
       }
       catch(Exception e)
       {
-
         return (ResponseEntity<ServiceSchema>) ResponseEntity.internalServerError();
       }
     }
@@ -67,12 +62,15 @@ public class RestService extends RestServiceImplBase implements RegistryApi  {
       schema.setServiceId(request.getServiceName());
       schema.setServiceName(request.getServiceName());
       schema.setServiceHostIP(request.getIp());
+      registerServiceResponse reply = registerServiceResponse.getDefaultInstance();
 
-
-      schema = datastore.addService(schema);
-      registerServiceResponse reply = registerServiceResponse.newBuilder()
-            .setServiceName(schema.getServiceName()).setIp(schema.getServiceHostIP()).setStatus(Boolean.getBoolean(schema.getStatus()))
-            .build();
+      if ( datastore.addService(schema) )
+      {
+           schema =  datastore.findServiceById(schema.getServiceId());
+          reply = registerServiceResponse.newBuilder()
+                  .setServiceName(schema.getServiceName()).setIp(schema.getServiceHostIP()).setStatus(Boolean.getBoolean(schema.getStatus()))
+                  .build();
+      }
     responseObserver.onNext(reply);
     responseObserver.onCompleted();
   }

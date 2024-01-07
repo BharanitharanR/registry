@@ -59,7 +59,6 @@ public class DatastoreImpl implements DatastoreInterface {
         doc.put("serviceId",serviceId);
         try
         {
-          log.info("data from db"+this.datastore.findOne(doc,ServiceSchema.class).toString());
           return this.datastore.findOne(doc,ServiceSchema.class);
         }
         catch(Exception e)
@@ -70,15 +69,14 @@ public class DatastoreImpl implements DatastoreInterface {
         }
     }
 
-    public ServiceSchema addService(ServiceSchema serviceSchemaModel)  {
+    public boolean addService(ServiceSchema serviceSchemaModel)  {
         Document doc;
-        try {
+        try
+        {
             doc  = Document.parse(this.objectMapper.writeValueAsString(serviceSchemaModel));
-            this.datastore.insertOne(doc);
-            return serviceSchemaModel;
-        } catch (Exception e) {
-            // throw new RuntimeException(e);
-            return null;
+            return this.datastore.insertOne(doc) ;
+        } catch (Exception ignored) {
+            throw new RuntimeException();
         }
 
     }
