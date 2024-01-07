@@ -4,16 +4,19 @@ package com.batty.registry;
 
 
 
-message HelloRequest {
-    string firstName = 1;
-    string lastName = 2;
+message registerServiceRequest {
+    string serviceName = 1;
+    string ip = 2;
+    bool status = 3;
 }
 
-message HelloResponse {
-    string resp = 1;
+message registerServiceResponse {
+    string serviceName = 1;
+    string ip = 2;
+    bool status = 3;
 }
 
 
 service RestService {
-    rpc hello(HelloRequest) returns (HelloResponse);
+    rpc registerService(registerServiceRequest) returns (registerServiceResponse);
 }
