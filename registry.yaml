@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
-  title: Non-oAuth Scopes example
-  description: sample
+  title: Registry Service
+  description: A service for registering the services , more like a service discovery
   version: 1.0.0
 paths:
   /registry/service/{serviceId}:
