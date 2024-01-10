@@ -9,14 +9,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.batty</groupId>
-	<artifactId>registry</artifactId>
+	<artifactId>registry-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>service</name>
 	<description>Framework attempt</description>
 
 	<properties>
 		<java.version>21</java.version>
-		<project.id>service</project.id>
+		<project.id>registry-service</project.id>
 		<JAR_FILE>${project.basedir}/target/${artifactId}-${version}.jar</JAR_FILE>
 		<docker.repo>bharani3ran01/registryrepo</docker.repo>
 		<docker.image.tag>${version}</docker.image.tag>
@@ -89,6 +89,21 @@
 		<dependency>
 			<groupId>com.batty</groupId>
 			<artifactId>registry-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.batty</groupId>
+			<artifactId>framework</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.batty</groupId>
+			<artifactId>framework-registry</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.batty</groupId>
+			<artifactId>framework-datastore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- <dependency>
@@ -186,7 +201,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
@@ -214,7 +228,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>

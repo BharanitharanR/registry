@@ -53,9 +53,6 @@ public class RestService extends RestServiceImplBase implements RegistryApi  {
       }
     }
 
-
-
-  @Override
   public void registerService(registerServiceRequest request, StreamObserver<registerServiceResponse> responseObserver) {
       ServiceSchema schema = new ServiceSchema();
       schema.setStatus(Boolean.toString(request.getStatus()));
