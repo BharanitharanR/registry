@@ -31,13 +31,15 @@
 			<version>2.15.0.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mustache</artifactId>
+			<groupId>net.devh</groupId>
+			<artifactId>grpc-server-spring-boot-starter</artifactId>
+			<version>2.12.0.RELEASE</version>
 		</dependency>
+		<!--  Comment springboot
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -53,7 +55,7 @@
 			<artifactId>jul-to-slf4j</artifactId>
 			<version>2.0.9</version>
 		</dependency>
-			<dependency>
+	<!--		<dependency>
 				<groupId>org.mongodb</groupId>
 				<artifactId>mongodb-driver-sync</artifactId>
 				<version>4.11.1</version>
@@ -62,14 +64,14 @@
 				<groupId>org.mongodb</groupId>
 				<artifactId>bson</artifactId>
 				<version>4.11.1</version>
-			</dependency>
+			</dependency>-->
 		<!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
 		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>docker-maven-plugin</artifactId>
 			<version>0.43.4</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>com.batty</groupId>
 			<artifactId>framework-datastore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -77,6 +79,11 @@
 		<dependency>
 			<groupId>com.batty</groupId>
 			<artifactId>framework-registry</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>-->
+		<dependency>
+			<groupId>com.batty</groupId>
+			<artifactId>registry-interface</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -132,6 +139,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.1</version>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -178,6 +186,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
@@ -205,6 +214,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>
