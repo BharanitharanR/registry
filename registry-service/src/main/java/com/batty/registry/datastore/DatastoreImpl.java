@@ -2,6 +2,8 @@ package com.batty.registry.datastore;
 
 
 import com.batty.framework.interfaces.DatastoreInterface;
+import com.batty.registry.model.DeleteServiceSchema;
+import com.batty.registry.model.MongoDate;
 import com.batty.registry.model.ServiceSchema;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,12 +12,20 @@ import com.google.gson.JsonParser;
 import com.mongodb.client.model.IndexOptions;
 import jakarta.annotation.PostConstruct;
 import org.bson.Document;
+import com.mongodb.client.model.Filters.*;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.batty.framework.datastore.DatabaseHandler;
 import com.batty.framework.datastore.DatastoreUtil;
+
+import java.util.Date;
+
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
+
 
 @Component("RegistryDataStoreImpl")
 public class DatastoreImpl implements DatastoreInterface {
@@ -81,5 +91,28 @@ public class DatastoreImpl implements DatastoreInterface {
 
     }
 
+    public DeleteServiceSchema deleteServiceById(String serviceId) {
+
+        Bson doc = eq("serviceId", serviceId);
+        try
+        {
+            DeleteServiceSchema del = new DeleteServiceSchema();
+             if( this.datastore.removeOne(doc) > 0  ) {
+                 del.setServiceId(serviceId);
+                 del.setDeleteStatus("deleted");
+                 MongoDate lastModifiedDateTimeStamp = new MongoDate();
+                 lastModifiedDateTimeStamp.$date(new Date());
+                 del.setLastModifiedTimeStamp(lastModifiedDateTimeStamp);
+             }
+
+             return del;
+        }
+        catch(Exception e)
+        {
+            log.info("error in findServiceById"+e);
+
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.batty.framework.registry;
 
 import com.batty.registry.api.RegistryApi;
+import com.batty.registry.model.DeleteServiceSchema;
 import com.batty.registry.model.ServiceSchema;
 import com.batty.registry.registry.RegisterService;
 import net.jodah.failsafe.internal.util.Assert;
@@ -65,5 +66,13 @@ class ServiceApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(4)
+	public void testDeleteService() {
+		if (service != null) {
+			ResponseEntity<DeleteServiceSchema> response = service.removeService("TestService") ;
+			Assertions.assertEquals("deleted", response.getBody().getDeleteStatus());
+		}
+	}
 
 }

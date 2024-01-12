@@ -1,6 +1,7 @@
 package com.batty.registry;
 
 import com.batty.registry.api.RegistryApi;
+import com.batty.registry.model.DeleteServiceSchema;
 import com.batty.registry.datastore.DatastoreImpl;
 import com.batty.registry.model.ServiceSchema;
 import io.grpc.stub.StreamObserver;
@@ -53,7 +54,31 @@ public class RestService extends RestServiceImplBase implements RegistryApi  {
       }
     }
 
-  public void registerService(registerServiceRequest request, StreamObserver<registerServiceResponse> responseObserver) {
+    @Override
+    public ResponseEntity<ServiceSchema> registerHeartbeat(String serviceId, ServiceSchema serviceSchema) {
+        if( datastore.addService(serviceSchema) )
+        {
+            return ResponseEntity.ok(datastore.findServiceById(serviceSchema.getServiceId()));
+        }
+        else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<DeleteServiceSchema> removeService(String serviceId) {
+        try
+        {
+
+            return ResponseEntity.ok(datastore.deleteServiceById(serviceId));
+        }
+        catch(Exception e)
+        {
+            return (ResponseEntity<DeleteServiceSchema>) ResponseEntity.internalServerError();
+        }
+    }
+
+    public void registerService(registerServiceRequest request, StreamObserver<registerServiceResponse> responseObserver) {
       ServiceSchema schema = new ServiceSchema();
       schema.setStatus(Boolean.toString(request.getStatus()));
       schema.setServiceId(request.getServiceName());

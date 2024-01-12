@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -141,18 +141,18 @@
 				<artifactId>openapi-generator-maven-plugin</artifactId>
 				<version>5.3.0</version>
 				<executions>
-<!--					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<generatorName>java</generatorName>
-							<inputSpec>service.yaml</inputSpec>
-							<configOptions>
-								<sourceFolder>src/gen/java/main</sourceFolder>
-							</configOptions>
-						</configuration>
-					</execution>-->
+					<!--					<execution>
+                                            <goals>
+                                                <goal>generate</goal>
+                                            </goals>
+                                            <configuration>
+                                                <generatorName>java</generatorName>
+                                                <inputSpec>service.yaml</inputSpec>
+                                                <configOptions>
+                                                    <sourceFolder>src/gen/java/main</sourceFolder>
+                                                </configOptions>
+                                            </configuration>
+                                        </execution>-->
 					<execution>
 						<id>remote</id>
 						<phase>generate-sources</phase>
@@ -198,15 +198,15 @@
 				<artifactId>protobuf-maven-plugin</artifactId>
 				<version>${protobuf-plugin.version}</version>
 				<configuration>
-					<!-- Uncomment for mac
+					<!-- Uncomment for mac -->
 					<protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:osx-x86_64</protocArtifact>
-					-->
-					<protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+
+					<!-- <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact> -->
 					<pluginId>grpc-java</pluginId>
-					<!-- Uncooment for mac 
-					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:osx-x86_64</pluginArtifact> 
-					-->
-					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact> 
+					<!-- Uncooment for mac -->
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:osx-x86_64</pluginArtifact>
+					<!--
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact> -->
 				</configuration>
 				<executions>
 					<execution>

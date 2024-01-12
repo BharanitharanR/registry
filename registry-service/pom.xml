@@ -11,7 +11,7 @@
 	<groupId>com.batty</groupId>
 	<artifactId>registry-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>service</name>
+	<name>registry-service</name>
 	<description>Framework attempt</description>
 
 	<properties>
@@ -83,17 +83,7 @@
 		</dependency>-->
 		<dependency>
 			<groupId>com.batty</groupId>
-			<artifactId>registry-interface</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.batty</groupId>
 			<artifactId>registry-client</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.batty</groupId>
-			<artifactId>framework</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
